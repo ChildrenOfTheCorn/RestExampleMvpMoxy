@@ -3,6 +3,8 @@ package com.example.restexample;
 import android.app.Application;
 import android.content.Context;
 
+import com.example.restexample.injection.AppComponent;
+
 /**
  * Created by grishberg on 20.10.16.
  */

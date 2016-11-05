@@ -35,6 +35,11 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'com.google.dagger:dagger:2.2'
     testCompile 'org.mockito:mockito-core:1.+'
+    testCompile "org.powermock:powermock-module-junit4:1.6.4"
+    testCompile "org.powermock:powermock-module-junit4-rule:1.6.4"
+    testCompile "org.powermock:powermock-api-mockito:1.6.4"
+    testCompile "org.powermock:powermock-classloading-xstream:1.6.4"
+
     debugAnnotationProcessor 'com.google.dagger:dagger-compiler:2.2'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.2'
     annotationProcessor 'com.arello-mobile:moxy-compiler:0.5.2'

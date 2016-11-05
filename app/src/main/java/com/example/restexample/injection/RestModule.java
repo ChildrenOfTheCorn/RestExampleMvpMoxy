@@ -1,5 +1,7 @@
 package com.example.restexample.injection;
 
+import com.example.restexample.domain.ApiService;
+import com.example.restexample.domain.HttpLogginInterceptor;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -8,6 +10,10 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by grishberg on 21.10.16.
@@ -20,7 +26,7 @@ public class RestModule {
     private String mBaseUrl;
 
     // Constructor needs one parameter to instantiate.
-    public RestModule(String baseUrl) {
+    public RestModule(final String baseUrl) {
         this.mBaseUrl = baseUrl;
     }
 
@@ -50,17 +56,17 @@ public class RestModule {
     @Provides
     @Singleton
     OkHttpClient provideOkHttpClient() {
-        Interceptor interceptor = provideInterceptor();
+        final Interceptor interceptor = provideInterceptor();
 
-        OkHttpClient defaultHttpClient = new OkHttpClient.Builder()
+        final OkHttpClient defaultHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(interceptor).build();
         return defaultHttpClient;
     }
 
     @Provides
     @Singleton
-    Retrofit provideRetrofit(Gson gson, OkHttpClient okHttpClient) {
-        Retrofit retrofit = new Retrofit.Builder()
+    Retrofit provideRetrofit(final Gson gson, final OkHttpClient okHttpClient) {
+        final Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .baseUrl(mBaseUrl)
                 .client(okHttpClient)
@@ -70,7 +76,7 @@ public class RestModule {
 
     @Provides
     @Singleton
-    Api provideRetrofitService(Retrofit retrofit) {
-        return retrofit.create(Api.class);
+    ApiService provideRetrofitService(final Retrofit retrofit) {
+        return retrofit.create(ApiService.class);
     }
 }

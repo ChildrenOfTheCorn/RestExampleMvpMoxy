@@ -33,29 +33,32 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testCompile 'junit:junit:4.12'
-    testCompile 'com.google.dagger:dagger:2.2'
     testCompile 'org.mockito:mockito-core:1.+'
     testCompile "org.powermock:powermock-module-junit4:1.6.4"
     testCompile "org.powermock:powermock-module-junit4-rule:1.6.4"
     testCompile "org.powermock:powermock-api-mockito:1.6.4"
     testCompile "org.powermock:powermock-classloading-xstream:1.6.4"
 
-    debugAnnotationProcessor 'com.google.dagger:dagger-compiler:2.2'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.2'
-    annotationProcessor 'com.arello-mobile:moxy-compiler:0.5.2'
+    // dagger 2
+    //testCompile 'com.google.dagger:dagger:2.5'
+    compile 'com.google.dagger:dagger:2.5'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.5'
+    //debugAnnotationProcessor 'com.google.dagger:dagger-compiler:2.5'
+
+    // butterknife
+    compile 'com.jakewharton:butterknife:8.1.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.1.0'
+
+    annotationProcessor "org.projectlombok:lombok:1.12.6"
     compile 'com.google.code.gson:gson:2.5'
-    compile 'com.jakewharton:butterknife:7.0.1'
     compile 'io.reactivex:rxjava:1.1.0'
     compile 'io.reactivex:rxandroid:1.1.0'
     compile "com.android.support:appcompat-v7:$support_version"
     compile "com.android.support:recyclerview-v7:$support_version"
     compile 'com.j256.ormlite:ormlite-core:4.48'
     compile 'com.j256.ormlite:ormlite-android:4.48'
-    compile 'com.google.dagger:dagger:2.2'
     provided 'org.projectlombok:lombok:1.12.6'
-    annotationProcessor "org.projectlombok:lombok:1.12.6"
     compile "com.android.support:appcompat-v7:$support_version"
-    testCompile 'junit:junit:4.12'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
 

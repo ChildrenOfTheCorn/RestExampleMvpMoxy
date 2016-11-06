@@ -1,4 +1,4 @@
-package com.example.restexample.domain;
+package com.example.restexample.data;
 
 /**
  * Created by grishberg on 04.11.16.

@@ -1,7 +1,7 @@
-package com.example.restexample.injection;
+package com.example.restexample.injection.modules;
 
-import com.example.restexample.domain.ApiService;
-import com.example.restexample.domain.HttpLogginInterceptor;
+import com.example.restexample.data.ApiService;
+import com.example.restexample.data.HttpLogginInterceptor;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -23,11 +23,11 @@ public class RestModule {
     private static final String TAG = RestModule.class.getSimpleName();
     public static final String DATE_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
-    private String mBaseUrl;
+    private final String baseUrl;
 
     // Constructor needs one parameter to instantiate.
     public RestModule(final String baseUrl) {
-        this.mBaseUrl = baseUrl;
+        this.baseUrl = baseUrl;
     }
 
     /**
@@ -68,7 +68,7 @@ public class RestModule {
     Retrofit provideRetrofit(final Gson gson, final OkHttpClient okHttpClient) {
         final Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .baseUrl(mBaseUrl)
+                .baseUrl(baseUrl)
                 .client(okHttpClient)
                 .build();
         return retrofit;

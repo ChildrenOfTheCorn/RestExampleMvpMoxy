@@ -1,4 +1,4 @@
-package com.example.restexample.domain;
+package com.example.restexample.data;
 
 import android.util.Log;
 

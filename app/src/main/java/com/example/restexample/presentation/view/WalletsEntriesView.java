@@ -1,6 +1,6 @@
-package com.example.restexample.mvp.view;
+package com.example.restexample.presentation.view;
 
-import com.arellomobile.mvp.MvpView;
+import com.example.mvpframework.view.MvpView;
 
 /**
  * Created by grishberg on 20.10.16.

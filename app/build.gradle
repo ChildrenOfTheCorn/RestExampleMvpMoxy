@@ -29,7 +29,8 @@ android {
 
 dependencies {
     String dagger_version = "2.2"
-    String butterknife_version = "8.1.0"
+    String butterknife_version = "8.0.1"
+
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -45,9 +46,13 @@ dependencies {
     compile "com.jakewharton:butterknife:$butterknife_version"
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterknife_version"
     //moxy
-    annotationProcessor 'com.arello-mobile:moxy-compiler:0.5.2'
-    compile 'com.arello-mobile:moxy:0.5.2'
-    compile 'com.arello-mobile:moxy-android:0.5.2'
+    annotationProcessor 'com.arello-mobile:moxy-compiler:0.5.4'
+    compile ('com.arello-mobile:moxy:0.5.4'){
+        exclude group: 'com.google.android'
+    }
+    compile ('com.arello-mobile:moxy-android:0.5.4'){
+        exclude group: 'com.google.android'
+    }
     //lombok
     annotationProcessor "org.projectlombok:lombok:1.12.6"
     provided 'org.projectlombok:lombok:1.12.6'

@@ -1,4 +1,4 @@
-package com.example.restexample.injection.modules;
+package com.example.restexample.di.modules;
 
 import android.content.Context;
 

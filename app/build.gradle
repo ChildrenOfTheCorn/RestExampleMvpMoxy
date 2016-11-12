@@ -28,7 +28,7 @@ android {
 }
 
 dependencies {
-    String dagger_version = "2.3"
+    String dagger_version = "2.2"
     String butterknife_version = "8.1.0"
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -36,10 +36,6 @@ dependencies {
     })
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:1.+'
-    testCompile 'org.powermock:powermock-module-junit4:1.6.4'
-    testCompile 'org.powermock:powermock-module-junit4-rule:1.6.4'
-    testCompile 'org.powermock:powermock-api-mockito:1.6.4'
-    testCompile 'org.powermock:powermock-classloading-xstream:1.6.4'
     // dagger 2
     testCompile "com.google.dagger:dagger:$dagger_version"
     compile "com.google.dagger:dagger:$dagger_version"
@@ -48,17 +44,25 @@ dependencies {
     // butterknife
     compile "com.jakewharton:butterknife:$butterknife_version"
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterknife_version"
+    //moxy
+    annotationProcessor 'com.arello-mobile:moxy-compiler:0.5.2'
+    compile 'com.arello-mobile:moxy:0.5.2'
+    compile 'com.arello-mobile:moxy-android:0.5.2'
+    //lombok
     annotationProcessor "org.projectlombok:lombok:1.12.6"
+    provided 'org.projectlombok:lombok:1.12.6'
+    //gson
     compile 'com.google.code.gson:gson:2.5'
+    //RX
     compile 'io.reactivex:rxjava:1.1.0'
     compile 'io.reactivex:rxandroid:1.1.0'
+    //support
     compile "com.android.support:appcompat-v7:$support_version"
     compile "com.android.support:recyclerview-v7:$support_version"
-    compile 'com.j256.ormlite:ormlite-core:4.48'
-    compile 'com.j256.ormlite:ormlite-android:4.48'
-    provided 'org.projectlombok:lombok:1.12.6'
     compile "com.android.support:appcompat-v7:$support_version"
+    //retrofit
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-    compile project(':mvpframework')
+    compile 'org.greenrobot:greendao:3.2.0'
+    compile 'org.greenrobot:greendao-generator:3.2.0'
 }

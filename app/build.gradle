@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileOptions {
@@ -16,7 +18,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         jackOptions {
-            enabled true
+            enabled false
         }
     }
     buildTypes {
@@ -39,17 +41,21 @@ dependencies {
     // dagger 2
     testCompile "com.google.dagger:dagger:$dagger_version"
     compile "com.google.dagger:dagger:$dagger_version"
-    annotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
-    debugAnnotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
+    apt "com.google.dagger:dagger-compiler:$dagger_version"
+    //debugAnnotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
     // butterknife
     compile "com.jakewharton:butterknife:$butterknife_version"
-    annotationProcessor "com.jakewharton:butterknife-compiler:$butterknife_version"
+    apt "com.jakewharton:butterknife-compiler:$butterknife_version"
     //moxy
-    annotationProcessor 'com.arello-mobile:moxy-compiler:0.5.2'
-    compile 'com.arello-mobile:moxy:0.5.2'
-    compile 'com.arello-mobile:moxy-android:0.5.2'
+    compile ('com.arello-mobile:moxy:0.5.4'){
+        exclude group: 'com.google.android'
+    }
+    compile ('com.arello-mobile:moxy-android:0.5.4'){
+        exclude group: 'com.google.android'
+    }
+    apt 'com.arello-mobile:moxy-compiler:0.5.4'
     //lombok
-    annotationProcessor "org.projectlombok:lombok:1.12.6"
+    apt "org.projectlombok:lombok:1.12.6"
     provided 'org.projectlombok:lombok:1.12.6'
     //gson
     compile 'com.google.code.gson:gson:2.5'

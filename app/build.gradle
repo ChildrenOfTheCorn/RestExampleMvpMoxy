@@ -30,8 +30,9 @@ android {
 }
 
 dependencies {
-    String dagger_version = "2.2"
-    String butterknife_version = "8.1.0"
+    String dagger_version = "2.7"
+    String butterknife_version = "8.2.1"
+    String moxy_version = "1.1.2"
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -47,13 +48,13 @@ dependencies {
     compile "com.jakewharton:butterknife:$butterknife_version"
     apt "com.jakewharton:butterknife-compiler:$butterknife_version"
     //moxy
-    compile ('com.arello-mobile:moxy:0.5.4'){
+    compile ("com.arello-mobile:moxy:$moxy_version"){
         exclude group: 'com.google.android'
     }
-    compile ('com.arello-mobile:moxy-android:0.5.4'){
+    compile ("com.arello-mobile:moxy-android:$moxy_version"){
         exclude group: 'com.google.android'
     }
-    apt 'com.arello-mobile:moxy-compiler:0.5.4'
+    apt "com.arello-mobile:moxy-compiler:$moxy_version"
     //lombok
     apt "org.projectlombok:lombok:1.12.6"
     provided 'org.projectlombok:lombok:1.12.6'
@@ -69,6 +70,7 @@ dependencies {
     //retrofit
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    //greendao
     compile 'org.greenrobot:greendao:3.2.0'
     compile 'org.greenrobot:greendao-generator:3.2.0'
 }

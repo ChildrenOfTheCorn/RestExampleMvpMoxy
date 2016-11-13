@@ -15,9 +15,15 @@ import dagger.Provides;
 public class DataModule {
     private static final String TAG = DataModule.class.getSimpleName();
 
+    private final AuthorizationStorageRepository repository;
+
+    public DataModule(final AuthorizationStorageRepository repository) {
+        this.repository = repository;
+    }
+
     @Provides
     @Singleton
     AuthorizationStorageRepository provideAuthStorage() {
-        return new AuthorizationStorageRepositoryImpl();
+        return repository;
     }
 }

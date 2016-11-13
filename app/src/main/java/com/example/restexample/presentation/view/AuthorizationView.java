@@ -14,7 +14,11 @@ public interface AuthorizationView extends BaseMvpView {
 
     void showNetworkError();
 
-    void setLoginButtonVisibility(boolean isVisible);
+    void enableButton(boolean isVisible);
 
     void showNextScreen();
+
+    void showEmptyLoginError();
+
+    void showEmptyPasswordError();
 }

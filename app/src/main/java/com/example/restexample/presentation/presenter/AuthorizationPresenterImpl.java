@@ -1,5 +1,7 @@
 package com.example.restexample.presentation.presenter;
 
+import android.text.TextUtils;
+
 import com.arellomobile.mvp.InjectViewState;
 import com.example.restexample.App;
 import com.example.restexample.data.repositories.AuthorizationRepository;
@@ -26,6 +28,17 @@ public class AuthorizationPresenterImpl extends BaseMvpPresenter<AuthorizationVi
 
     @Override
     public void authorize(final String login, final CharSequence password) {
+        final boolean isLoginEmpty = login == null || login.length() == 0;
+        final boolean isPasswordEmpty = password == null || password.length() == 0;
+        if (isLoginEmpty) {
+            getViewState().showEmptyLoginError();
+        }
+        if (isPasswordEmpty) {
+            getViewState().showEmptyPasswordError();
+        }
+        if (isLoginEmpty || isPasswordEmpty) {
+            return;
+        }
         authorizationRepository.authorization(login, password)
                 .subscribe(response -> {
                     getViewState().showNextScreen();

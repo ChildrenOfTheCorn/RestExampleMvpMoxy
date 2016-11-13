@@ -1,7 +1,5 @@
 package com.example.restexample.di.modules;
 
-import android.content.Context;
-
 import com.example.restexample.data.ApiService;
 import com.example.restexample.data.HttpLogginInterceptor;
 import com.example.restexample.data.interceptors.ReceivedCookiesInterceptor;
@@ -62,8 +60,7 @@ public class RestModule {
 
     @Provides
     @Singleton
-    Gson provideGson(final Context context) {
-
+    Gson provideGson() {
         final Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
                 .setPrettyPrinting()
@@ -74,12 +71,12 @@ public class RestModule {
 
     @Provides
     @Singleton
-    OkHttpClient provideOkHttpClient(final HttpLogginInterceptor logginInterceptor, final ReceivedCookiesInterceptor cookiesInterceptor) {
-        final OkHttpClient defaultHttpClient = new OkHttpClient.Builder()
+    OkHttpClient provideOkHttpClient(final HttpLogginInterceptor logginInterceptor,
+                                     final ReceivedCookiesInterceptor cookiesInterceptor) {
+        return new OkHttpClient.Builder()
                 .addInterceptor(logginInterceptor)
                 .addInterceptor(cookiesInterceptor)
                 .build();
-        return defaultHttpClient;
     }
 
     @Provides
@@ -97,12 +94,5 @@ public class RestModule {
     @Singleton
     ApiService provideRetrofitService(final Retrofit retrofit) {
         return retrofit.create(ApiService.class);
-    }
-
-    @Provides
-    @Singleton
-    AuthorizationRepository provideAuthRepository(final AuthorizationStorageRepository storageRepository,
-                                                  final ApiService apiService) {
-        return new AuthorizationRepositoryImpl(storageRepository, apiService);
     }
 }

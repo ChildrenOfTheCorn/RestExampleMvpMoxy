@@ -60,7 +60,7 @@ public class RxUtils {
                         continue;
                     }
                     break;
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     subscriber.onError(e);
                     return;
                 }

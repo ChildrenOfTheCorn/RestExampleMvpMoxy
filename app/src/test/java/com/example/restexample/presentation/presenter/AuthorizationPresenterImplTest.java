@@ -1,6 +1,7 @@
 package com.example.restexample.presentation.presenter;
 
 import com.example.restexample.BaseTestCase;
+import com.example.restexample.domain.exceptions.WrongCredentialsException;
 import com.example.restexample.presentation.view.AuthorizationView;
 
 import org.junit.Before;
@@ -10,6 +11,7 @@ import org.mockito.Mock;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import rx.Observable;
+import rx.Subscriber;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -67,5 +69,24 @@ public class AuthorizationPresenterImplTest extends BaseTestCase {
         verify(repository, times(1)).authorization("111", "222");
         verify(view, never()).showEmptyLoginError();
         verify(view, never()).showEmptyPasswordError();
+        verify(view, times(1)).showNextScreen();
+    }
+
+    @Test
+    public void testAuthWithWrongPassword() {
+        final Observable<Boolean> observable = Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(final Subscriber<? super Boolean> subscriber) {
+                subscriber.onError(new WrongCredentialsException(null));
+                subscriber.onCompleted();
+            }
+        });
+        when(repository.authorization(anyString(), any(CharSequence.class))).thenReturn(observable);
+        presenter.authorize("111", "222");
+        verify(repository, times(1)).authorization("111", "222");
+        verify(view, never()).showEmptyLoginError();
+        verify(view, never()).showEmptyPasswordError();
+        verify(view, never()).showNextScreen();
+        verify(view, times(1)).showBadPasswordError();
     }
 }

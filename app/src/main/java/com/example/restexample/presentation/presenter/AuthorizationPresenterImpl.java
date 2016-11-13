@@ -21,7 +21,7 @@ public class AuthorizationPresenterImpl extends BaseMvpPresenter<AuthorizationVi
     AuthorizationRepository authorizationRepository;
 
     public AuthorizationPresenterImpl() {
-        App.get().getRestComponent().inject(this);
+        App.getAppComponent().inject(this);
     }
 
     @Override

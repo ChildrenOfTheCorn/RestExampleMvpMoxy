@@ -1,8 +1,7 @@
 package com.example.restexample.presentation.presenter.common;
 
+import com.example.restexample.App;
 import com.example.restexample.data.repositories.AuthorizationStorageRepository;
-import com.example.restexample.di.components.AppComponent;
-import com.example.restexample.di.components.RestComponent;
 
 import javax.inject.Inject;
 
@@ -18,7 +17,7 @@ public class NetworkInjectionHelper {
     @Inject
     @Getter AuthorizationStorageRepository authorizationStorage;
 
-    public NetworkInjectionHelper(final RestComponent restComponent) {
-        restComponent.inject(this);
+    public NetworkInjectionHelper() {
+        App.getAppComponent().inject(this);
     }
 }

@@ -1,12 +1,13 @@
 package com.example.restexample.di.modules;
 
+import android.content.Context;
+
 import com.example.restexample.data.ApiService;
 import com.example.restexample.data.HttpLogginInterceptor;
 import com.example.restexample.data.interceptors.ReceivedCookiesInterceptor;
 import com.example.restexample.data.repositories.AuthorizationRepository;
 import com.example.restexample.data.repositories.AuthorizationRepositoryImpl;
 import com.example.restexample.data.repositories.AuthorizationStorageRepository;
-import com.example.restexample.di.scopes.RestScope;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -15,7 +16,6 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -25,6 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 @Module
 public class RestModule {
+
     private static final String TAG = RestModule.class.getSimpleName();
     public static final String DATE_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
@@ -41,7 +42,7 @@ public class RestModule {
      * @return
      */
     @Provides
-    @RestScope
+    @Singleton
     HttpLogginInterceptor provideMainInterceptor() {
         final HttpLogginInterceptor interceptor = new HttpLogginInterceptor();
         interceptor.setLevel(HttpLogginInterceptor.Level.BODY);
@@ -54,14 +55,15 @@ public class RestModule {
      * @return
      */
     @Provides
-    @RestScope
+    @Singleton
     ReceivedCookiesInterceptor provideCookieInterceptor(final AuthorizationStorageRepository authorizationStorageRepository) {
         return new ReceivedCookiesInterceptor(authorizationStorageRepository);
     }
 
     @Provides
-    @RestScope
-    Gson provideGson() {
+    @Singleton
+    Gson provideGson(final Context context) {
+
         final Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
                 .setPrettyPrinting()
@@ -71,7 +73,7 @@ public class RestModule {
     }
 
     @Provides
-    @RestScope
+    @Singleton
     OkHttpClient provideOkHttpClient(final HttpLogginInterceptor logginInterceptor, final ReceivedCookiesInterceptor cookiesInterceptor) {
         final OkHttpClient defaultHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(logginInterceptor)
@@ -81,7 +83,7 @@ public class RestModule {
     }
 
     @Provides
-    @RestScope
+    @Singleton
     Retrofit provideRetrofit(final Gson gson, final OkHttpClient okHttpClient) {
         final Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
@@ -92,13 +94,13 @@ public class RestModule {
     }
 
     @Provides
-    @RestScope
+    @Singleton
     ApiService provideRetrofitService(final Retrofit retrofit) {
         return retrofit.create(ApiService.class);
     }
 
     @Provides
-    @RestScope
+    @Singleton
     AuthorizationRepository provideAuthRepository(final AuthorizationStorageRepository storageRepository,
                                                   final ApiService apiService) {
         return new AuthorizationRepositoryImpl(storageRepository, apiService);

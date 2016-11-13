@@ -44,6 +44,7 @@ public class App extends Application {
                 .build();
         restComponent = DaggerRestComponent.builder()
                 .restModule(restModule)
+                .dataComponent(dataComponent)
                 .build();
     }
 

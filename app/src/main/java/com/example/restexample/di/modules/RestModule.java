@@ -6,6 +6,7 @@ import com.example.restexample.data.interceptors.ReceivedCookiesInterceptor;
 import com.example.restexample.data.repositories.AuthorizationRepository;
 import com.example.restexample.data.repositories.AuthorizationRepositoryImpl;
 import com.example.restexample.data.repositories.AuthorizationStorageRepository;
+import com.example.restexample.di.scopes.RestScope;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -40,7 +41,7 @@ public class RestModule {
      * @return
      */
     @Provides
-    @Singleton
+    @RestScope
     HttpLogginInterceptor provideMainInterceptor() {
         final HttpLogginInterceptor interceptor = new HttpLogginInterceptor();
         interceptor.setLevel(HttpLogginInterceptor.Level.BODY);
@@ -53,13 +54,13 @@ public class RestModule {
      * @return
      */
     @Provides
-    @Singleton
+    @RestScope
     ReceivedCookiesInterceptor provideCookieInterceptor(final AuthorizationStorageRepository authorizationStorageRepository) {
         return new ReceivedCookiesInterceptor(authorizationStorageRepository);
     }
 
     @Provides
-    @Singleton
+    @RestScope
     Gson provideGson() {
         final Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
@@ -70,7 +71,7 @@ public class RestModule {
     }
 
     @Provides
-    @Singleton
+    @RestScope
     OkHttpClient provideOkHttpClient(final HttpLogginInterceptor logginInterceptor, final ReceivedCookiesInterceptor cookiesInterceptor) {
         final OkHttpClient defaultHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(logginInterceptor)
@@ -80,7 +81,7 @@ public class RestModule {
     }
 
     @Provides
-    @Singleton
+    @RestScope
     Retrofit provideRetrofit(final Gson gson, final OkHttpClient okHttpClient) {
         final Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
@@ -91,13 +92,13 @@ public class RestModule {
     }
 
     @Provides
-    @Singleton
+    @RestScope
     ApiService provideRetrofitService(final Retrofit retrofit) {
         return retrofit.create(ApiService.class);
     }
 
     @Provides
-    @Singleton
+    @RestScope
     AuthorizationRepository provideAuthRepository(final AuthorizationStorageRepository storageRepository,
                                                   final ApiService apiService) {
         return new AuthorizationRepositoryImpl(storageRepository, apiService);

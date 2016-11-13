@@ -2,6 +2,10 @@ package com.example.restexample.di.modules;
 
 import com.example.restexample.data.ApiService;
 import com.example.restexample.data.HttpLogginInterceptor;
+import com.example.restexample.data.interceptors.ReceivedCookiesInterceptor;
+import com.example.restexample.data.repositories.AuthorizationRepository;
+import com.example.restexample.data.repositories.AuthorizationRepositoryImpl;
+import com.example.restexample.data.repositories.AuthorizationStorageRepository;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -35,11 +39,23 @@ public class RestModule {
      *
      * @return
      */
-
-    Interceptor provideInterceptor() {
-        HttpLogginInterceptor interceptor = new HttpLogginInterceptor();
+    @Provides
+    @Singleton
+    HttpLogginInterceptor provideMainInterceptor() {
+        final HttpLogginInterceptor interceptor = new HttpLogginInterceptor();
         interceptor.setLevel(HttpLogginInterceptor.Level.BODY);
         return interceptor;
+    }
+
+    /**
+     * interceptor для куки
+     *
+     * @return
+     */
+    @Provides
+    @Singleton
+    ReceivedCookiesInterceptor provideCookieInterceptor(final AuthorizationStorageRepository authorizationStorageRepository) {
+        return new ReceivedCookiesInterceptor(authorizationStorageRepository);
     }
 
     @Provides
@@ -55,11 +71,11 @@ public class RestModule {
 
     @Provides
     @Singleton
-    OkHttpClient provideOkHttpClient() {
-        final Interceptor interceptor = provideInterceptor();
-
+    OkHttpClient provideOkHttpClient(final HttpLogginInterceptor logginInterceptor, final ReceivedCookiesInterceptor cookiesInterceptor) {
         final OkHttpClient defaultHttpClient = new OkHttpClient.Builder()
-                .addInterceptor(interceptor).build();
+                .addInterceptor(logginInterceptor)
+                .addInterceptor(cookiesInterceptor)
+                .build();
         return defaultHttpClient;
     }
 
@@ -78,5 +94,12 @@ public class RestModule {
     @Singleton
     ApiService provideRetrofitService(final Retrofit retrofit) {
         return retrofit.create(ApiService.class);
+    }
+
+    @Provides
+    @Singleton
+    AuthorizationRepository provideAuthRepository(final AuthorizationStorageRepository storageRepository,
+                                                  final ApiService apiService) {
+        return new AuthorizationRepositoryImpl(storageRepository, apiService);
     }
 }

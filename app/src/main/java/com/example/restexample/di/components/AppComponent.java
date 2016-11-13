@@ -1,7 +1,8 @@
 package com.example.restexample.di.components;
 
 import com.example.restexample.di.modules.AppModule;
-import com.example.restexample.di.modules.RestModule;
+import com.example.restexample.presentation.presenter.AuthorizationPresenterImpl;
+import com.example.restexample.presentation.presenter.common.NetworkInjectionHelper;
 
 import javax.inject.Singleton;
 
@@ -12,7 +13,8 @@ import dagger.Component;
  * Базовый зависимостип о всему приложению
  */
 @Singleton
-@Component(modules = {AppModule.class, RestModule.class})
+@Component(modules = {AppModule.class})
 
 public interface AppComponent {
+
 }

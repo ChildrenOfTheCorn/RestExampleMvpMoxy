@@ -5,13 +5,14 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.example.restexample.R;
-import com.example.restexample.presentation.presenter.AuthorizationPresenter;
+import com.example.restexample.presentation.presenter.AuthorizationPresenterImpl;
+import com.example.restexample.presentation.ui.common.BaseMvpActivity;
 import com.example.restexample.presentation.view.AuthorizationView;
 
-public class MainActivity extends AppCompatActivity implements AuthorizationView{
+public class MainActivity extends BaseMvpActivity implements AuthorizationView {
 
     @InjectPresenter
-    AuthorizationPresenter presenter;
+    AuthorizationPresenterImpl presenter;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -42,6 +43,12 @@ public class MainActivity extends AppCompatActivity implements AuthorizationView
 
     @Override
     public void setLoginButtonVisibility(final boolean isVisible) {
+
+    }
+
+    @Override
+    public void showNextScreen() {
+        //TODO перейти на нужный экран
 
     }
 }

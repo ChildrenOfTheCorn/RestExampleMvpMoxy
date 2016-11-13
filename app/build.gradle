@@ -33,12 +33,11 @@ dependencies {
     String dagger_version = "2.7"
     String butterknife_version = "8.2.1"
     String moxy_version = "1.1.2"
+    String support_version = "25.0.0"
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:1.+'
     // dagger 2
     testCompile "com.google.dagger:dagger:$dagger_version"
     compile "com.google.dagger:dagger:$dagger_version"
@@ -48,29 +47,31 @@ dependencies {
     compile "com.jakewharton:butterknife:$butterknife_version"
     apt "com.jakewharton:butterknife-compiler:$butterknife_version"
     //moxy
-    compile ("com.arello-mobile:moxy:$moxy_version"){
+    compile("com.arello-mobile:moxy:$moxy_version") {
         exclude group: 'com.google.android'
     }
-    compile ("com.arello-mobile:moxy-android:$moxy_version"){
+    compile("com.arello-mobile:moxy-android:$moxy_version") {
         exclude group: 'com.google.android'
     }
     apt "com.arello-mobile:moxy-compiler:$moxy_version"
-    //lombok
-    apt "org.projectlombok:lombok:1.12.6"
-    provided 'org.projectlombok:lombok:1.12.6'
-    //gson
+    //support
+    compile "com.android.support:recyclerview-v7:$support_version"
+    compile "com.android.support:cardview-v7:$support_version"
+    compile "com.android.support:support-v4:$support_version"
+    compile "com.android.support:appcompat-v7:$support_version"
+    compile "com.android.support:design:$support_version"
+    //greendao
     compile 'com.google.code.gson:gson:2.5'
-    //RX
+    //retrofit
     compile 'io.reactivex:rxjava:1.1.0'
     compile 'io.reactivex:rxandroid:1.1.0'
-    //support
-    compile "com.android.support:appcompat-v7:$support_version"
-    compile "com.android.support:recyclerview-v7:$support_version"
-    compile "com.android.support:appcompat-v7:$support_version"
-    //retrofit
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-    //greendao
     compile 'org.greenrobot:greendao:3.2.0'
     compile 'org.greenrobot:greendao-generator:3.2.0'
+    compile 'com.android.support:design:25.0.0'
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:1.+'
+    apt 'org.projectlombok:lombok:1.12.6'
+    provided 'org.projectlombok:lombok:1.12.6'
 }

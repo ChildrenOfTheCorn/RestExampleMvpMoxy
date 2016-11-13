@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">RestExample</string>
+    <string name="title_activity_wallets">Кошельечки</string>
 </resources>

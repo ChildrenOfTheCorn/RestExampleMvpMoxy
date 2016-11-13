@@ -2,7 +2,7 @@ package com.example.restexample.presentation.presenter.common;
 
 import com.arellomobile.mvp.MvpPresenter;
 import com.example.restexample.di.components.AppComponent;
-import com.example.restexample.di.components.RestComponent;
+
 import com.example.restexample.presentation.view.common.BaseAuthRouteView;
 
 /**
@@ -12,8 +12,8 @@ public class BaseNetworkInteractionPresenter<V extends BaseAuthRouteView> extend
     private static final String TAG = BaseNetworkInteractionPresenter.class.getSimpleName();
     private final NetworkInjectionHelper networkInjectionHelper;
 
-    public BaseNetworkInteractionPresenter(final RestComponent restComponent) {
-        networkInjectionHelper = new NetworkInjectionHelper(restComponent);
+    public BaseNetworkInteractionPresenter() {
+        networkInjectionHelper = new NetworkInjectionHelper();
     }
 
     protected void onAuthException() {

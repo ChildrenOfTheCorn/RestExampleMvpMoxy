@@ -13,6 +13,6 @@ public class WalletsPresenter extends BaseNetworkInteractionPresenter<WalletsVie
     private static final String TAG = WalletsPresenter.class.getSimpleName();
 
     public WalletsPresenter() {
-        super(App.get().getRestComponent());
+        super();
     }
 }

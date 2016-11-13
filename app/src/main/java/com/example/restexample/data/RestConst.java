@@ -6,7 +6,7 @@ package com.example.restexample.data;
  */
 public final class RestConst {
     private static final String TAG = RestConst.class.getSimpleName();
-    public static final String END_POINT = "";
+    public static final String END_POINT = "https://api.github.com";
 
     // Имена методов сервера
     public final static class Methods {

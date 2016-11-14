@@ -76,8 +76,4 @@ public class RxUtils {
                 .subscribeOn(scheduler)
                 .observeOn(AndroidSchedulers.mainThread()).<T>dematerialize();
     }
-
-    public interface CacheListener<T> {
-        T getCache(int id);
-    }
 }

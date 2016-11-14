@@ -7,13 +7,14 @@ package com.example.restexample.data;
 public final class RestConst {
     private static final String TAG = RestConst.class.getSimpleName();
     public static final String END_POINT = "https://grishberg.pythonanywhere.com";
+    public static final String API_V1 = END_POINT + "/api/upc1";
 
     // Имена методов сервера
     public final static class Methods {
         private Methods() {
         }
 
-        public static final String AUTHORIZATION = "authorization";
+        public static final String AUTHORIZATION = API_V1 + "/authorization";
     }
 
     // имена полей

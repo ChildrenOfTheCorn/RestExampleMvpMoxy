@@ -1,10 +1,7 @@
 package com.example.restexample.di.modules;
 
 import com.example.restexample.data.ApiService;
-import com.example.restexample.data.HttpLogginInterceptor;
 import com.example.restexample.data.interceptors.ReceivedCookiesInterceptor;
-import com.example.restexample.data.repositories.AuthorizationRepository;
-import com.example.restexample.data.repositories.AuthorizationRepositoryImpl;
 import com.example.restexample.data.repositories.AuthorizationStorageRepository;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -15,6 +12,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -41,9 +39,9 @@ public class RestModule {
      */
     @Provides
     @Singleton
-    HttpLogginInterceptor provideMainInterceptor() {
-        final HttpLogginInterceptor interceptor = new HttpLogginInterceptor();
-        interceptor.setLevel(HttpLogginInterceptor.Level.BODY);
+    HttpLoggingInterceptor provideMainInterceptor() {
+        final HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         return interceptor;
     }
 
@@ -71,7 +69,7 @@ public class RestModule {
 
     @Provides
     @Singleton
-    OkHttpClient provideOkHttpClient(final HttpLogginInterceptor logginInterceptor,
+    OkHttpClient provideOkHttpClient(final HttpLoggingInterceptor logginInterceptor,
                                      final ReceivedCookiesInterceptor cookiesInterceptor) {
         return new OkHttpClient.Builder()
                 .addInterceptor(logginInterceptor)

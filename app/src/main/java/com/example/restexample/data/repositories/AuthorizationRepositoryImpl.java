@@ -24,11 +24,8 @@ public class AuthorizationRepositoryImpl implements AuthorizationRepository {
     @Override
     public Observable<Boolean> authorization(final String login, final CharSequence password) {
         // обзервер запроса к ретрофиту
-        final Observable<RestResponse<AuthResponse>> authObservable = RxUtils
-                .wrapRetrofitCall(apiService.authorization(login, password.toString()));
-
         // новый обзервер, который создастся после обработки авторизации
-        final Observable<Boolean> observable = RxUtils.wrapAsync(authObservable)
+        final Observable<Boolean> observable = RxUtils.wrapRetrofitCallAsync(apiService.authorization(login, password.toString()))
                 .flatMap(response -> {
                     // сохранить в хранилище токен авторизации
                     authorizationStorageRepository.setCurrentLogin(login);

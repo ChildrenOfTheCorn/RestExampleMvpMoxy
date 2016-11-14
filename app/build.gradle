@@ -44,7 +44,7 @@ dependencies {
     testCompile "com.google.dagger:dagger:$dagger_version"
     compile "com.google.dagger:dagger:$dagger_version"
     apt "com.google.dagger:dagger-compiler:$dagger_version"
-    //debugAnnotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
+    testApt "com.google.dagger:dagger-compiler:$dagger_version"
     // butterknife
     compile "com.jakewharton:butterknife:$butterknife_version"
     apt "com.jakewharton:butterknife-compiler:$butterknife_version"

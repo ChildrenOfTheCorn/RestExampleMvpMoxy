@@ -25,16 +25,13 @@ public class RxUtils {
     public static final int RETRY_COUNT = 3;
 
     public static <T> Observable<RestResponse<T>> wrapRetrofitCallAsync(final Call<RestResponse<T>> call) {
-        Log.d(TAG, "wrapRetrofitCallAsync: ");
         return wrapAsync(Observable.create(subscriber -> {
             Response<RestResponse<T>> execute = null;
-            Log.d(TAG, "wrapRetrofitCallAsync: execute " + Thread.currentThread());
 
             RestResponse<T> body = null;
             for (int i = 0; i < RETRY_COUNT; i++) {
                 final Call<RestResponse<T>> callClone = call.clone();
                 try {
-                    Log.d(TAG, "wrapRetrofitCallAsync: call.execute");
                     execute = callClone.execute();
                     body = execute.body();
                     if (body != null && body.getError() != null) {

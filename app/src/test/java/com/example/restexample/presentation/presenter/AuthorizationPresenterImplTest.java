@@ -3,8 +3,10 @@ package com.example.restexample.presentation.presenter;
 import com.example.restexample.BaseTestCase;
 import com.example.restexample.domain.exceptions.WrongCredentialsException;
 import com.example.restexample.presentation.view.AuthorizationView;
+import com.example.restexample.util.RxSchedulersOverrideRule;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -25,6 +27,10 @@ import static org.mockito.Mockito.when;
  */
 @RunWith(PowerMockRunner.class)
 public class AuthorizationPresenterImplTest extends BaseTestCase {
+
+    @Rule
+    // Must be added to every test class that targets app code that uses RxJava
+    public final RxSchedulersOverrideRule mOverrideSchedulersRule = new RxSchedulersOverrideRule();
 
     AuthorizationPresenterImpl presenter;
 

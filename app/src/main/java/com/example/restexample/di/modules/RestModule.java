@@ -2,6 +2,7 @@ package com.example.restexample.di.modules;
 
 import com.example.restexample.data.ApiService;
 import com.example.restexample.data.RestModels.RestResponse;
+import com.example.restexample.data.RxErrorHandlingCallAdapterFactory;
 import com.example.restexample.data.SampleErrorChecker;
 import com.example.restexample.data.SoftErrorDelegate;
 import com.example.restexample.data.interceptors.ReceivedCookiesInterceptor;
@@ -83,12 +84,12 @@ public class RestModule {
     @Provides
     @Singleton
     Retrofit provideRetrofit(final Gson gson, final OkHttpClient okHttpClient) {
-        final Retrofit retrofit = new Retrofit.Builder()
+        return new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .baseUrl(baseUrl)
                 .client(okHttpClient)
+                .addCallAdapterFactory(RxErrorHandlingCallAdapterFactory.create())
                 .build();
-        return retrofit;
     }
 
     @Provides

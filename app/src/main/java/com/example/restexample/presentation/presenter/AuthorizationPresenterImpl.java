@@ -1,13 +1,11 @@
 package com.example.restexample.presentation.presenter;
 
-import android.text.TextUtils;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.example.restexample.App;
 import com.example.restexample.data.repositories.AuthorizationRepository;
-import com.example.restexample.domain.exceptions.WrongCredentialsException;
 import com.example.restexample.presentation.presenter.common.BaseMvpPresenter;
 import com.example.restexample.presentation.view.AuthorizationView;
+import com.example.restexample.utils.StringUtils;
 
 import javax.inject.Inject;
 
@@ -17,7 +15,9 @@ import javax.inject.Inject;
 @InjectViewState
 public class AuthorizationPresenterImpl extends BaseMvpPresenter<AuthorizationView>
         implements AuthorizationPresenter {
+
     private static final String TAG = AuthorizationPresenterImpl.class.getSimpleName();
+    private static final int MIN_PASSWORD_LENGTH = 4;
 
     @Inject
     AuthorizationRepository authorizationRepository;
@@ -28,24 +28,40 @@ public class AuthorizationPresenterImpl extends BaseMvpPresenter<AuthorizationVi
 
     @Override
     public void authorize(final String login, final CharSequence password) {
-        final boolean isLoginEmpty = login == null || login.length() == 0;
-        final boolean isPasswordEmpty = password == null || password.length() == 0;
+
+
+        final boolean isLoginEmpty = StringUtils.isEmpty(login);
+        final boolean isPasswordInvalid = StringUtils.isEmpty(password) || password.length() < MIN_PASSWORD_LENGTH;
+
         if (isLoginEmpty) {
             getViewState().showEmptyLoginError();
+        } else {
+            getViewState().hideLoginError();
         }
-        if (isPasswordEmpty) {
-            getViewState().showEmptyPasswordError();
+        if (isPasswordInvalid) {
+            if (StringUtils.isEmpty(password)) {
+                getViewState().showEmptyPasswordError();
+            } else {
+                getViewState().showBadPasswordError();
+            }
+        } else {
+            getViewState().hidePasswordError();
         }
-        if (isLoginEmpty || isPasswordEmpty) {
+        if (isLoginEmpty || isPasswordInvalid) {
             return;
         }
+
+        getViewState().showProgress();
         authorizationRepository.authorization(login, password)
                 .subscribe(response -> {
+                    getViewState().hideProgress();
                     getViewState().showNextScreen();
                 }, throwable -> {
-                    if (throwable instanceof WrongCredentialsException) {
-                        getViewState().showBadPasswordError();
-                    }
+
+                    getViewState().hideProgress();
+
+                    getViewState().showNetworkError(throwable.getMessage());
+
                 });
     }
 }

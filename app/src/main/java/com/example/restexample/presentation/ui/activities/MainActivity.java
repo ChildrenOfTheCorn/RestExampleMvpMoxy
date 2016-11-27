@@ -1,75 +1,28 @@
 package com.example.restexample.presentation.ui.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.EditText;
 
-import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.MvpActivity;
 import com.example.restexample.R;
-import com.example.restexample.presentation.presenter.AuthorizationPresenterImpl;
-import com.example.restexample.presentation.ui.common.BaseMvpActivity;
-import com.example.restexample.presentation.view.AuthorizationView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+/**
+ * Created by Andrey on 27.11.2016.
+ */
 
-public class MainActivity extends BaseMvpActivity implements AuthorizationView {
+public class MainActivity extends MvpActivity {
 
-    @InjectPresenter
-    AuthorizationPresenterImpl presenter;
-    @BindView(R.id.auth_screen_phone)
-    EditText authScreenPhone;
-    @BindView(R.id.auth_screen_password)
-    EditText authScreenPassword;
-    @BindView(R.id.auth_screen_button_enter)
-    Button authScreenButtonEnter;
+
+    public static void start(Context context) {
+        Intent starter = new Intent(context, MainActivity.class);
+        context.startActivity(starter);
+    }
 
     @Override
-    protected void onCreate(final Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-        authScreenButtonEnter.setOnClickListener(view ->
-                presenter.authorize(authScreenPhone.getText().toString(), authScreenPassword.getText()));
-    }
-
-    @Override
-    public void showProgress() {
-
-    }
-
-    @Override
-    public void hideProgress() {
-
-    }
-
-    @Override
-    public void showBadPasswordError() {
-
-    }
-
-    @Override
-    public void showNetworkError() {
-
-    }
-
-    @Override
-    public void enableButton(final boolean isEnabled) {
-        authScreenButtonEnter.setEnabled(isEnabled);
-    }
-
-    @Override
-    public void showNextScreen() {
-        //TODO перейти на нужный экран
-    }
-
-    @Override
-    public void showEmptyLoginError() {
-        authScreenPhone.setError(getString(R.string.auth_empty_login));
-    }
-
-    @Override
-    public void showEmptyPasswordError() {
-        authScreenPassword.setError(getString(R.string.auth_empty_password));
     }
 }

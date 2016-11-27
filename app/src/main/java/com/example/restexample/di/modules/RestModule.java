@@ -1,6 +1,9 @@
 package com.example.restexample.di.modules;
 
 import com.example.restexample.data.ApiService;
+import com.example.restexample.data.RestModels.RestResponse;
+import com.example.restexample.data.SampleErrorChecker;
+import com.example.restexample.data.SoftErrorDelegate;
 import com.example.restexample.data.interceptors.ReceivedCookiesInterceptor;
 import com.example.restexample.data.repositories.AuthorizationStorageRepository;
 import com.google.gson.FieldNamingPolicy;
@@ -92,5 +95,11 @@ public class RestModule {
     @Singleton
     ApiService provideRetrofitService(final Retrofit retrofit) {
         return retrofit.create(ApiService.class);
+    }
+
+    @Provides
+    @Singleton
+    SoftErrorDelegate<RestResponse> provideSoftErrorDelegate() {
+        return new SampleErrorChecker();
     }
 }

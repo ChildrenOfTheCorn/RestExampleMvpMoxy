@@ -28,10 +28,6 @@ import static org.mockito.Mockito.when;
 @RunWith(PowerMockRunner.class)
 public class AuthorizationPresenterImplTest extends BaseTestCase {
 
-    @Rule
-    // Must be added to every test class that targets app code that uses RxJava
-    public final RxSchedulersOverrideRule mOverrideSchedulersRule = new RxSchedulersOverrideRule();
-
     AuthorizationPresenterImpl presenter;
 
     @Mock

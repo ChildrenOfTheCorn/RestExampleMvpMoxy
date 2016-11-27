@@ -13,15 +13,20 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by grishberg on 13.11.16.
- *  Базовый класс первичной обработки сетевых запросов
+ * Created by grishberg on 20.11.16.
+ * как вариант инжектить этот класс всем репозиториям, которые будут работать с сетью
  */
-public class RxUtils {
-    private static final String TAG = RxUtils.class.getSimpleName();
-    public static final int RETRY_COUNT = 3;
+public class NetworkUtils {
+    private static final String TAG = NetworkUtils.class.getSimpleName();
 
-    public static <T> Observable<RestResponse<T>> wrapRetrofitCallAsync(final SoftErrorDelegate<RestResponse> errorChecker,
-                                                                        final Call<RestResponse<T>> call) {
+    public static final int RETRY_COUNT = 3;
+    private final SoftErrorDelegate<RestResponse> errorChecker;
+
+    public NetworkUtils(final SoftErrorDelegate<RestResponse> errorChecker) {
+        this.errorChecker = errorChecker;
+    }
+
+    public <T> Observable<RestResponse<T>> wrapRetrofitCallAsync(final Call<RestResponse<T>> call) {
         return wrapAsync(Observable.create(subscriber -> {
             Response<RestResponse<T>> execute = null;
 
@@ -56,14 +61,15 @@ public class RxUtils {
         }));
     }
 
-    public static <T> Observable<T> wrapAsync(final Observable<T> observable) {
+    private <T> Observable<T> wrapAsync(final Observable<T> observable) {
         return wrapAsync(observable, Schedulers.io());
     }
 
-    public static <T> Observable<T> wrapAsync(final Observable<T> observable, final Scheduler scheduler) {
+    private <T> Observable<T> wrapAsync(final Observable<T> observable, final Scheduler scheduler) {
         return observable
                 .materialize()
                 .subscribeOn(scheduler)
-                .observeOn(AndroidSchedulers.mainThread()).<T>dematerialize();
+                .observeOn(AndroidSchedulers.mainThread())
+                .dematerialize();
     }
 }

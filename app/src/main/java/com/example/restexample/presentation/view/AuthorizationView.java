@@ -12,7 +12,7 @@ public interface AuthorizationView extends BaseMvpView {
 
     void showBadPasswordError();
 
-    void showNetworkError();
+    void showNetworkError(String message);
 
     void enableButton(boolean isVisible);
 
@@ -21,4 +21,9 @@ public interface AuthorizationView extends BaseMvpView {
     void showEmptyLoginError();
 
     void showEmptyPasswordError();
+
+    void hidePasswordError();
+
+    void hideLoginError();
+
 }

@@ -1,6 +1,8 @@
 package com.example.restexample.data;
 
+import com.example.restexample.data.RestModels.RestResponse;
 import com.example.restexample.domain.exceptions.RetrofitException;
+import com.example.restexample.domain.exceptions.WrongCredentialsException;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -13,6 +15,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.HttpException;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import rx.Observable;
+import rx.functions.Action0;
 import rx.functions.Func1;
 
 /**
@@ -20,27 +23,35 @@ import rx.functions.Func1;
  */
 public class RxErrorHandlingCallAdapterFactory extends CallAdapter.Factory {
     private final RxJavaCallAdapterFactory original;
+    private final SoftErrorDelegate<RestResponse> softErrorDelegate;
 
-    private RxErrorHandlingCallAdapterFactory() {
+    private RxErrorHandlingCallAdapterFactory(final SoftErrorDelegate<RestResponse> softErrorDelegate) {
+        this.softErrorDelegate = softErrorDelegate;
         original = RxJavaCallAdapterFactory.create();
     }
 
-    public static CallAdapter.Factory create() {
-        return new RxErrorHandlingCallAdapterFactory();
+    public static CallAdapter.Factory create(final SoftErrorDelegate<RestResponse> softErrorDelegate) {
+        return new RxErrorHandlingCallAdapterFactory(softErrorDelegate);
     }
 
     @Override
     public CallAdapter<?> get(final Type returnType, final Annotation[] annotations, final Retrofit retrofit) {
-        return new RxCallAdapterWrapper(retrofit, original.get(returnType, annotations, retrofit));
+        return new RxCallAdapterWrapper(retrofit,
+                original.get(returnType, annotations, retrofit),
+                softErrorDelegate);
     }
 
     private static class RxCallAdapterWrapper implements CallAdapter<Observable<?>> {
         private final Retrofit retrofit;
         private final CallAdapter<?> wrapped;
+        private final SoftErrorDelegate<RestResponse> softErrorDelegate;
 
-        public RxCallAdapterWrapper(final Retrofit retrofit, final CallAdapter<?> wrapped) {
+        public RxCallAdapterWrapper(final Retrofit retrofit,
+                                    final CallAdapter<?> wrapped,
+                                    final SoftErrorDelegate<RestResponse> softErrorDelegate) {
             this.retrofit = retrofit;
             this.wrapped = wrapped;
+            this.softErrorDelegate = softErrorDelegate;
         }
 
         @Override
@@ -51,12 +62,17 @@ public class RxErrorHandlingCallAdapterFactory extends CallAdapter.Factory {
         @SuppressWarnings("unchecked")
         @Override
         public <R> Observable<?> adapt(final Call<R> call) {
-            return ((Observable) wrapped.adapt(call)).onErrorResumeNext(new Func1<Throwable, Observable>() {
-                @Override
-                public Observable call(final Throwable throwable) {
-                    return Observable.error(asRetrofitException(throwable));
-                }
-            });
+            return ((Observable<RestResponse<?>>) wrapped.adapt(call))
+                    .flatMap(new Func1<RestResponse<?>, Observable<RestResponse<?>>>() {
+                        @Override
+                        public Observable<RestResponse<?>> call(final RestResponse<?> restResponse) {
+                            final Throwable throwable = softErrorDelegate.checkSoftError(restResponse);
+                            if (throwable != null) {
+                                return Observable.error(throwable);
+                            }
+                            return Observable.just(restResponse);
+                        }
+                    });
         }
 
         private RetrofitException asRetrofitException(final Throwable throwable) {

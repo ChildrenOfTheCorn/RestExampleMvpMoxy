@@ -14,7 +14,11 @@ public class SampleErrorChecker implements SoftErrorDelegate<RestResponse> {
 
     @Override
     public Throwable checkSoftError(@NonNull final RestResponse body) {
+        if (body.getError() == null) {
+            return null;
+        }
         switch (body.getError().getCode()) {
+            case RestConst.Errors.USER_NOT_FOUND:
             case RestConst.Errors.WRONG_CREDENTIALS:
                 return new WrongCredentialsException(body.getError());
             case RestConst.Errors.TOKEN_INVALID:

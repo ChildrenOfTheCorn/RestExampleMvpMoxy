@@ -9,11 +9,11 @@ import lombok.Getter;
  */
 public class RestError {
     private static final String TAG = RestError.class.getSimpleName();
-    public static final String CODE = "code";
-    public static final String MESSAGE = "message";
-    @SerializedName(CODE)
+    @SerializedName("code")
     @Getter
     private int code;
-    @SerializedName(MESSAGE)
-    @Getter private String message;
+
+    @SerializedName("message")
+    @Getter
+    private String message;
 }

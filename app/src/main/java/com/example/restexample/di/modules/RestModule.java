@@ -83,12 +83,14 @@ public class RestModule {
 
     @Provides
     @Singleton
-    Retrofit provideRetrofit(final Gson gson, final OkHttpClient okHttpClient) {
+    Retrofit provideRetrofit(final Gson gson,
+                             final OkHttpClient okHttpClient,
+                             final SoftErrorDelegate<RestResponse> softErrorDelegate) {
         return new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .baseUrl(baseUrl)
                 .client(okHttpClient)
-                .addCallAdapterFactory(RxErrorHandlingCallAdapterFactory.create())
+                .addCallAdapterFactory(RxErrorHandlingCallAdapterFactory.create(softErrorDelegate))
                 .build();
     }
 

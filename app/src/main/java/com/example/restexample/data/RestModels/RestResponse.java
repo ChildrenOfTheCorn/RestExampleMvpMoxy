@@ -9,14 +9,19 @@ import lombok.Getter;
  */
 public class RestResponse<T> {
     private static final String TAG = RestResponse.class.getSimpleName();
-    private static final String DATA = "data";
-    private static final String ERROR = "error";
+
+    @Getter
+    @SerializedName("success")
+    private String success;
+
     @Getter
     private final boolean isCached;
-    @SerializedName(DATA)
+
+    @SerializedName("data")
     @Getter
     private final T data;
-    @SerializedName(ERROR)
+
+    @SerializedName("error")
     @Getter
     private RestError error;
 

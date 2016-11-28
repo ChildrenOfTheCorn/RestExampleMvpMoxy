@@ -18,6 +18,7 @@ import java.util.Arrays;
 
 import retrofit2.Call;
 import retrofit2.Response;
+import rx.Observable;
 import rx.observers.TestSubscriber;
 
 import static org.mockito.Mockito.*;
@@ -62,9 +63,11 @@ public class AuthorizationRepositoryImplTest {
 
     @Test
     public void testValidResponse() {
+        final Observable<RestResponse<AuthResponse>> observable = Observable.just(restResponse);
         //given
         final TestSubscriber<Boolean> testSubscriber = new TestSubscriber<>();
-        when(apiService.authorization(anyString(), anyString())).thenReturn(restResponseCall);
+        when(apiService.authorization(anyString(), anyString()))
+                .thenReturn(observable);
         //when
         repository.authorization("12345", "123").subscribe(testSubscriber);
         //then

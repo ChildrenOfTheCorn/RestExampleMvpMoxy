@@ -29,6 +29,7 @@ public final class RestConst {
 
     // Ошибки
     public final class Errors {
+        public static final int USER_NOT_FOUND = 2;
         public static final int WRONG_CREDENTIALS = 1000;
         public static final int TOKEN_INVALID = 1001;
     }
